@@ -44,6 +44,6 @@ If the resolver gets the IP address, it will cached the data and return it back 
 
 One thing need to be noted that, everytime the recursive resolver gets responses from one kind of DNS servers, it will save the address of the next server so they could be cached later.
 
-Reference: 
+**Reference:** 
 1.https://howdns.works/
 2.https://www.cloudflare.com/learning/dns/dns-records/dns-a-record/
