@@ -1,4 +1,12 @@
-## Welcome to GitHub Pages
+## What happens when you type www.google.com.au in the browser and press enter?
+
+Have you ever thought about what happens when you type www.google.com.au in your browser and hit enter before you actually see the google logo and that familiar search bar? It normally happens very quick but there is actually a lot of things happening.
+
+### Simple version
+In one simple sentence, the behaviour of hitting www.google.com.au essentially means you are requesting resources from another machine(google's server in this case) through the internet. You could imagine google's server locates in somewhere and it has an unique Ip address works just like your home's address. Each URL you type in will have a corresponding IP address, for example, www.google.com.au has an IP address of 172.217.203.94. So you can actually get same google page by typing http://172.217.203.94. However these IP addresses are not easy to be remembered by human, so that's why we are having those domain name. So the first thing when you type the domain name, someone need to find the correct IP address for it and let your machine find the google server by using that IP address. For doing that, there is a system that maintains the name of the URl and the corresponding IP address, we call the system DNS(Domain Name System). There are multiple DNS servers in the internet, but before your request goes to those DNS servers in the internet.Your browser will check caches FROM
+1. Broswer DNS cache
+2. OS DNS cache
+
 
 You can use the [editor on GitHub](https://github.com/hsy3418/heavenBlog/edit/master/index.md) to maintain and preview the content for your website in Markdown files.
 
