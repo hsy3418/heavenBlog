@@ -17,7 +17,7 @@ DNS servers(Also known as recursive resolvers) is where the last stop that could
 
 
 ## Recursive search
-For explainning the recursive search, there are three types of other DNS servers need to understand first. 
+For explainning the recursive search, there are three types of other DNS servers need to be understood first. 
 They are:
 - Root Server
 - TLD(Top Level DNS ) Server
