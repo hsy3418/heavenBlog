@@ -47,3 +47,104 @@ One thing need to be noted that, everytime the recursive resolver gets responses
 **Reference:** 
 1.https://howdns.works/
 2.https://www.cloudflare.com/learning/dns/dns-records/dns-a-record/
+
+
+
+
+
+
+# K8s basic architecture illustration
+
+**Prerequisites**
+- Assume we have a web app and a db app have been containerized. These two apps are supposed to talk to each other.
+
+## Pods
+Pods are the smallest unit in K8s, each pod encapsulates a container or multiple containers, however pods won't have containers for one same app if you want to scale up the instances, the proper way is to create more pods. Why do we need pods is because this is the object that can be managed by other K8s objects. For the diagram that we can see, we have 6 pods in total in the cluster. 
+The way to create Pods is by create a manifest(All of the K8s objects could be created by the manifest file. 
+
+_A typical pod manifest:_
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: demoapp
+spec:
+  containers:
+     - name: demoapp
+     - image: nginx
+```
+
+
+## ReplicaSets
+ReplicaseSet is another K8s object, it has it's only responsibility, which is creating replicas for an app instance, and it will also ensure the instances will be maintained in the number of specficiation, for example, if you specify 3 replicas for one instance, if one pod fails, it will auto create another pods. 
+
+_A replicaSet manifest_
+```yaml
+apiVersion: v1
+kind: ReplicaSet
+metadata:
+  - name: demorc
+spec:
+  template:
+    metadata:
+      name: demoapp
+      type: front-end
+    spec:
+      containers:
+      - name: demoapp
+      - image: nginx
+    replicas: 3
+ selector:
+   matchLabels:
+     type: front-end
+```
+
+
+## Deployments
+Deployment in a K8s object, it is in a higher hierachy than ReplicaSets. Many times, when we create a deployments manifest, we could specify replicas, it will help us to create a replicaset without creating a replicaset itself manually. So we need to know the deployments object itself is not responsible for managing the replicas, it is the replicaset it created managing replicas. So what deployments do?
+- Rolling out apps (update apps)
+- Rolling back apps (undo updates)
+- Scale up 
+- Pause and resume deployments.
+When the pod spec changeds, the deployments will be notify there is an update, it will do the rolling updates for us by update pod one by one.
+_A deployments manifest_
+```yaml
+apiVersion: v1
+kind: ReplicaSet
+metadata:
+  - name: demorc
+spec:
+  template:
+    metadata:
+      name: demoapp
+      type: front-end
+    spec:
+      containers:
+      - name: demoapp
+      - image: nginx
+    replicas: 3
+ selector:
+   matchLabels:
+     type: front-end
+```
+
+
+## Services
+Service is used to enable communication between different network namespaces. By default, each pod has it's own IP since it is an isolated network namespace. Service is helping to mapping out the request from outside of the network to the pod.
+For example, if a user from external network want to access your web application. What service does is it listens on the port(NodePort) and forward the requests to the app.
+_A service manifest_
+```yaml
+apiVersion: v1
+kind: Service
+metadata: 
+  name: demo-service
+spec:
+  type: NodePort
+  ports:
+    - targetPort: 80
+    - port: 80
+    - NodePort: 30008
+  selector:
+    app: demoapp
+    type: front-end
+```
