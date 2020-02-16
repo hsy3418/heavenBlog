@@ -132,6 +132,16 @@ spec:
 ## Services
 Service is used to enable communication between different network namespaces. By default, each pod has it's own IP since it is an isolated network namespace. Service is helping to mapping out the request from outside of the network to the pod.
 For example, if a user from external network want to access your web application. What service does is it listens on the port(NodePort) and forward the requests to the app.
+
+### NodePort
+NodePort is the type of service that enables communication between external users request to the pod
+An user from external world want to access the web app, they are not allowed to do so cause the user and the pod are in different network. Service instead provide them a path to communicate, how it does is it listens to the request on the nodeport it created on the Node and forward the request to the target port. So there are three type of ports here(also need to be specified in the service manifest)
+- targetPort is the target port for the node, which is also the destination of the request
+- port is the port on service itself.
+- NodePort:30008 which is on the node, and the user can access the pod by `curl 192.168.1.1:30008`, the range of the nodeport is 30000-32767.
+
+A question you might ask is I know the target port for the service, but how do I know which are target pods? The answer is by looking at labels and selectors.When we defined pod spec, we could add labels to the pods(e.g. type:front-end) and when we define service, we could have selector for matching the labels, which means what pods will be listend by the service. The labels mechanism applied to the whole cluster, so the pods could be in one node or across multiple nodes. Service will balance the load automatically for them.
+
 _A service manifest_
 ```yaml
 apiVersion: v1
